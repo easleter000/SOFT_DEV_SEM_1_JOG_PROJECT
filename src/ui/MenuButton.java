@@ -9,6 +9,16 @@ import utilz.LoadSave;
 import static utilz.Constants.UI.Buttons.*;
 
 public class MenuButton {
+	private int xPos;
+	private int yPos;
+	private int rowIndex;
+	private int index;
+	private  int xOffsetCenter = B_WIDTH / 2;
+	private Gamestate state;
+	private BufferedImage[] imgs;
+	private boolean mouseOver;
+	private boolean mousePressed;
+	private Rectangle bounds;
 	// TODO: create private fields
 	// TODO: int xPos, yPos, rowIndex, index
 	// TODO: xOffsetCenter set to B_WIDTH / 2
@@ -18,6 +28,12 @@ public class MenuButton {
 	// TODO: Rectangle bounds
 
 	public MenuButton(int xPos, int yPos, int rowIndex, Gamestate state) {
+		this.xPos = xPos;
+		this.yPos = yPos;
+		this.rowIndex = rowIndex;
+		this.state = state;
+		loadImgs();
+		initBounds();
 		// TODO: set this xPos to xPos
 		// TODO: set this yPos to yPos
 		// TODO: set this rowIndex to rowIndex
@@ -27,10 +43,13 @@ public class MenuButton {
 	}
 
 	private void initBounds() {
+		bounds = new Rectangle(xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT);
 		// TODO: set bounds to newRectangle(xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT)
 	}
 
 	private void loadImgs() {
+		imgs = new BufferedImage[3];
+		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS);
 		// TODO: set img to new BufferedImage[3];
 		// TODO: create a BufferedImage called temp and set to LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS)
 		for (int i = 0; i < imgs.length; i++)
@@ -38,12 +57,20 @@ public class MenuButton {
 	}
 
 	public void draw(Graphics g) {
+		g.drawImage(imgs[index], xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT, null);
 		// TODO: call g.drawImage passing in
 		// TODO: imgs[index], xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT, null)
 
 	}
 
 	public void update() {
+		index = 0;
+		if (mouseOver){
+			index = 1;
+		}
+		if (mousePressed){
+			index = 2;
+		}
 		// TODO: set index to 0
 		// TODO if mouseOver
 		// TODO: set index to 1
@@ -53,30 +80,38 @@ public class MenuButton {
 	}
 
 	public boolean isMouseOver() {
+		return mouseOver;
 		// TODO: return mouseOver
 	}
 
 	public void setMouseOver(boolean mouseOver) {
+		this.mouseOver = mouseOver;
 		// TODO: set this mouseOver to mouseOver
 	}
 
 	public boolean isMousePressed() {
+		return mousePressed;
 		// TODO: return mousePressed
 	}
 
 	public void setMousePressed(boolean mousePressed) {
+		this.mousePressed = mousePressed;
 		// TODO: set this mousePressed to mousePressed
 	}
 
 	public Rectangle getBounds() {
+		return bounds;
 		// TODO: return bounds
 	}
 
 	public void applyGamestate() {
+		Gamestate.state = state;
 		// TODO: set Gamestate.state to state
 	}
 
 	public void resetBools() {
+		mousePressed = false;
+		mouseOver = false;
 		// set mouseOver and mousePressed to false
 	}
 
